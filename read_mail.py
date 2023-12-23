@@ -36,7 +36,6 @@ messages = gmail.get_messages(query=construct_query(query_params))
 
 for message in messages:
     tables = pd.read_html(message.html, match='Order details')
-    print(len(tables))
     result = tables[0][0][11]
     date_regex = '(\\d{2})/(\\d{2})/(\\d{4})\\s(\\d{2}):(\\d{2})'
     title_regex = '(?<=(\\d{2})/(\\d{2})/(\\d{4})\\s(\\d{2}):(\\d{2}))(.*)(?=\\sSala)'
@@ -62,9 +61,6 @@ for message in messages:
             },
         }                 
         event = service.events().insert(calendarId='primary', body=event).execute()
-        print('Event created: %s' % event.get('htmlLink'))
-        print(showing_date)
-        print(showing_title)
     except HttpError as error:
         print("Error occured", error)
     except AttributeError as error:
